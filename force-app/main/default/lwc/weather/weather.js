@@ -22,7 +22,7 @@ export default class Weather extends LightningElement {
     wiredAccount({ error, data }) {
         if (data) {
             this.shippingAddress = data.fields.ShippingCity.value
-            console.log('shippingAddress' , this.shippingAddress);
+            console.log('shippingAddress' , this.shippingAddress)
             
         } else if (error) {
             this.shippingAddress = undefined
@@ -35,6 +35,10 @@ export default class Weather extends LightningElement {
 
   get cardTile(){
     return `Weather In - ${this.shippingAddressLabel}`
+  }
+
+  get minMaxTempRange(){
+    return `${Math.round(minTempC)}° - ${Math.round(maxTempC)}°`
   }
 
 
