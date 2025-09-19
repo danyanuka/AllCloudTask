@@ -1,14 +1,17 @@
 public class AdressWeatherService {
 
     @AuraEnabled
-    public static weatherInfo getTomorrowWeatherByCity(String city) {
+    public static WeatherInfo getTomorrowWeatherByCity(String city) {
         String endpoint = 'forecast.json?q=' + EncodingUtil.urlEncode(city, 'UTF-8') + '&days=2';
         try {
             HttpResponse res = sendGetRequest(endpoint);
             if(res.getStatusCode() == 200){
-                Map<String, Object> tomorrow = parseWeatherDay(res.getBody(), 1);
-                weatherInfo tomorrowsInfo = new weatherInfo(tomorrow);
+                Map<String, Object> parsedJsonRes = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
 
+                Map<String, Object> tomorrow = getWeatherDay(parsedJsonRes, 1);
+                String cityName = (String)((Map<String, Object>)parsedJsonRes.get('location')).get('name');
+                WeatherInfo tomorrowsInfo = new WeatherInfo(tomorrow, cityName);
+                system.debug('TommorowInfo' + tomorrowsInfo);
                 return tomorrowsInfo;
             }
             else {
@@ -34,7 +37,7 @@ public class AdressWeatherService {
     }
 
 
-    private static Map<String, Object> parseWeatherDay(String jsonBody, Integer dayIndex ) {
+    private static Map<String, Object> getWeatherDay(Map<String, Object> parsedJsonRes, Integer dayIndex ) {
         // Weather API forecast Res Structure
         // res{
         //  "forecast": {
@@ -42,8 +45,7 @@ public class AdressWeatherService {
         //          {today{day}},
         //          {tommorow{day}}
         // }
-        Map<String, Object> jsonRes = (Map<String, Object>) JSON.deserializeUntyped(jsonBody);
-        List<Object> forecastDays = (List<Object>) ((Map<String, Object>)jsonRes.get('forecast')).get('forecastday');
+        List<Object> forecastDays = (List<Object>) ((Map<String, Object>)parsedJsonRes.get('forecast')).get('forecastday');
         Map<String, Object> tomorrowsData = (Map<String, Object>) forecastDays[dayIndex];
         Map<String, Object> tomorrow = (Map<String, Object>) tomorrowsData.get('day');
     
@@ -52,20 +54,22 @@ public class AdressWeatherService {
 
 
     public class WeatherInfo {
+        @AuraEnabled public String cityName;
         @AuraEnabled public String iconUrl;
         @AuraEnabled public String textDescription;
         @AuraEnabled public Decimal minTempC;
         @AuraEnabled public Decimal maxTempC;
         @AuraEnabled public Decimal avgTempC;
 
-        public WeatherInfo(Map<String, Object> dayData) {
+        public WeatherInfo(Map<String, Object> dayData , String cityName) {
            if(dayData != null){
-               Map<String, Object> condition = (Map<String, Object>) dayData.get('condition');
-               this.iconUrl = (String) condition.get('icon');
-               this.textDescription = (String) condition.get('text');
-               this.minTempC = (Decimal) dayData.get('mintemp_c');
-               this.maxTempC = (Decimal) dayData.get('maxtemp_c');
-               this.avgTempC = (Decimal) dayData.get('avgtemp_c');
+                this.cityName = cityName;
+                Map<String, Object> condition = (Map<String, Object>) dayData.get('condition');
+                this.iconUrl = (String) condition.get('icon');
+                this.textDescription = (String) condition.get('text');
+                this.minTempC = (Decimal) dayData.get('mintemp_c');
+                this.maxTempC = (Decimal) dayData.get('maxtemp_c');
+                this.avgTempC = (Decimal) dayData.get('avgtemp_c');
            }
         }
     }

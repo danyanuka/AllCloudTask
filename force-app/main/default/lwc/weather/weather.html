@@ -12,7 +12,7 @@
             <div slot="title" class="slds-m-around_small">
                 <h2 class="weather-title">{cardTile}</h2>
                 <div class="round-bg-blue slds-p-horizontal_small slds-p-vertical_xx-small">
-                    <span>{shippingCity}</span>
+                    <span>{weatherInfo.cityName}</span>
                 </div>
             </div>
             <!-- Weather -->
@@ -31,6 +31,18 @@
                 <p>Weather information could not be loaded</p>
             </div>
         </template>
+
+        <div slot="footer" class="button-container">
+            <lightning-button
+                class="rounded-btn"
+                label={btnAddressLabel} 
+                icon-position="right"
+                icon-name="utility:chevronright"
+                variant="brand-outline"
+                onclick={handleSwitchAddressField}
+                size="small">
+            </lightning-button>
+        </div>
 
     </lightning-card>
 </template>

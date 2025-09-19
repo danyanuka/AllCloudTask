@@ -9,7 +9,8 @@
   font-weight: 400;
   font-size:small;
   display: inline-block;
-  margin-top: 1rem
+  margin-top: 1rem;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
 
 }
 
@@ -20,5 +21,17 @@
 
 .text-blue{
   color: #05628A;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0rem 1rem 0 1rem;
+    
+}
+
+.rounded-btn {
+  box-shadow: 0 3px 4px rgba(16, 34, 36, 0.15);
+  --slds-c-button-radius-border: 0.40rem; 
 }
     
