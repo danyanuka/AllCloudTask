@@ -10,7 +10,10 @@
         <template lwc:elseif={weatherInfo}>
             <!-- Title -->
             <div slot="title" class="slds-m-around_small">
-                <h2 class="weather-title">{cardTile}</h2>
+                <div class="weather-title">
+                    {cardTitle} <strong>{currentAddressLabel}</strong>
+                </div>
+                
                 <div class="round-bg-blue slds-p-horizontal_small slds-p-vertical_xx-small">
                     <span>{weatherInfo.cityName}</span>
                 </div>
@@ -20,7 +23,7 @@
                 <img src={weatherInfo.iconUrl} alt='Weather Icon' class="slds-m-bottom_small weather-icon" />
                 <p class="slds-text-heading_medium slds-m-bottom_small">{weatherInfo.textDescription}</p>
                 <div class="min-max-range">
-                    <p class="slds-text-title_bold slds-text-heading_small">{maxTempRound}</p>
+                    <p class="slds-text-heading_medium">{maxTempRound}</p>
                     <p class="slds-text-heading_small slds-m-bottom_small text-blue ">{minTempRound}</p> 
                 </div>
             </div>

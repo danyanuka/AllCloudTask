@@ -7,11 +7,10 @@ public class AdressWeatherService {
             HttpResponse res = sendGetRequest(endpoint);
             if(res.getStatusCode() == 200){
                 Map<String, Object> parsedJsonRes = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
-
                 Map<String, Object> tomorrow = getWeatherDay(parsedJsonRes, 1);
                 String cityName = (String)((Map<String, Object>)parsedJsonRes.get('location')).get('name');
                 WeatherInfo tomorrowsInfo = new WeatherInfo(tomorrow, cityName);
-                system.debug('TommorowInfo' + tomorrowsInfo);
+             
                 return tomorrowsInfo;
             }
             else {
