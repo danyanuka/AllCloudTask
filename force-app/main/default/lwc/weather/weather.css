@@ -1,0 +1,24 @@
+.weather-title{
+  font-weight: 400;
+}
+
+.round-bg-blue{
+  background: #CFE9FE;
+  color: #05628A;
+  border-radius: 0.40rem;
+  font-weight: 400;
+  font-size:small;
+  display: inline-block;
+  margin-top: 1rem
+
+}
+
+.weather-icon{
+  width: 5rem;
+  height: 5rem;
+}
+
+.text-blue{
+  color: #05628A;
+}
+    

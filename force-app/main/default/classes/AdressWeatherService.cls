@@ -1,13 +1,14 @@
-public with sharing class AdressWeatherService {
+public class AdressWeatherService {
 
-    public weatherInfo getTomorrowWeatherByCity(String city) {
+    @AuraEnabled
+    public static weatherInfo getTomorrowWeatherByCity(String city) {
         String endpoint = 'forecast.json?q=' + EncodingUtil.urlEncode(city, 'UTF-8') + '&days=2';
         try {
             HttpResponse res = sendGetRequest(endpoint);
             if(res.getStatusCode() == 200){
                 Map<String, Object> tomorrow = parseWeatherDay(res.getBody(), 1);
                 weatherInfo tomorrowsInfo = new weatherInfo(tomorrow);
-                System.debug('Tomorrow summary: ' + tomorrowsInfo);
+
                 return tomorrowsInfo;
             }
             else {
@@ -20,7 +21,7 @@ public with sharing class AdressWeatherService {
         return null; 
     }
 
-    private HttpResponse sendGetRequest(String endpoint){
+    private static HttpResponse sendGetRequest(String endpoint){
         HttpRequest req = new HttpRequest();
         // Using a Named Credential
         req.setEndpoint('callout:WeatherApi/' + endpoint); 
@@ -28,11 +29,12 @@ public with sharing class AdressWeatherService {
     
         Http http = new Http();
         HttpResponse res = http.send(req);
+
         return res;
     }
 
 
-    private Map<String, Object> parseWeatherDay(String jsonBody, Integer dayIndex ) {
+    private static Map<String, Object> parseWeatherDay(String jsonBody, Integer dayIndex ) {
         // Weather API forecast Res Structure
         // res{
         //  "forecast": {
@@ -52,18 +54,18 @@ public with sharing class AdressWeatherService {
     public class WeatherInfo {
         @AuraEnabled public String iconUrl;
         @AuraEnabled public String textDescription;
-        @AuraEnabled public Decimal minTemp;
-        @AuraEnabled public Decimal maxTemp;
-        @AuraEnabled public Decimal avgTemp;
+        @AuraEnabled public Decimal minTempC;
+        @AuraEnabled public Decimal maxTempC;
+        @AuraEnabled public Decimal avgTempC;
 
         public WeatherInfo(Map<String, Object> dayData) {
            if(dayData != null){
                Map<String, Object> condition = (Map<String, Object>) dayData.get('condition');
                this.iconUrl = (String) condition.get('icon');
                this.textDescription = (String) condition.get('text');
-               this.minTemp = (Decimal) dayData.get('mintemp_c');
-               this.maxTemp = (Decimal) dayData.get('maxtemp_c');
-               this.avgTemp = (Decimal) dayData.get('avgtemp_c');
+               this.minTempC = (Decimal) dayData.get('mintemp_c');
+               this.maxTempC = (Decimal) dayData.get('maxtemp_c');
+               this.avgTempC = (Decimal) dayData.get('avgtemp_c');
            }
         }
     }
