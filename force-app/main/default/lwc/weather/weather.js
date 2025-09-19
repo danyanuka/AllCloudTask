@@ -50,7 +50,7 @@ export default class Weather extends LightningElement {
         }
     }
 
-  //This method is called either from the Wire (On Inital load AND when accounts address fields change)
+  //This method is called either from the wiredAccount (On Inital load AND when accounts address fields change)
   // Or from Btn click (handleSwitchAddressField)
   async callWeatherService(city) {
       try {
@@ -83,6 +83,7 @@ export default class Weather extends LightningElement {
       return this.selectedAddress === 'billing' ? this.billingAddressLabel : this.shippingAddressLabel;
   }
 
+  // The opposite of currentAddressLabel   
   get btnAddressLabel(){
       return this.selectedAddress === 'billing' ? this.shippingAddressLabel : this.billingAddressLabel
   }

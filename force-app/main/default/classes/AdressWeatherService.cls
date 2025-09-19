@@ -35,7 +35,7 @@ public class AdressWeatherService {
         return res;
     }
 
-    //Tries to make it generic and not specific for tomorrow in case it would scale to more days.
+    //Made it generic and not specifically for tomorrow in case it would scale to more days.
     private static Map<String, Object> getWeatherDay(Map<String, Object> parsedJsonRes, Integer dayIndex ) {
         // Weather API forecast Res Structure
         // res{
