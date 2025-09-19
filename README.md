@@ -1,18 +1,20 @@
-# Salesforce DX Project: Next Steps
+# Weather Component (LWC)
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+## Description
+A Salesforce Lightning Web Component that displays **tomorrow’s weather** on the **Account record page**.  
+The component uses the Account’s **Billing Address** or **Shipping Address** (city) to fetch weather data from [WeatherAPI](https://www.weatherapi.com/).  
 
-## How Do You Plan to Deploy Your Changes?
+## Features
+- Fetches tomorrow’s weather dynamically using the Account context (record Id).  
+- Uses either **Billing Address** or **Shipping Address** city to get the forecast.  
+- **Dynamic and Reactive title and content**:  
+  - Example: For an Account named `Dan`, the title may read:  
+    - `Tomorrow’s weather in Dan’s shipping address`  
+    - or `Tomorrow’s weather in Dan’s billing address`.  
+- **Toggle button** to switch between Billing and Shipping addresses.
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
-
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+## Usage
+  Open the Account record to see tomorrow’s weather forecast.
+  Make sure the Account has Adress data either ShippingAddress or BillingAddress (Secifically the city field)
+  Change the City in the Address field to observe reactivity
+ 
