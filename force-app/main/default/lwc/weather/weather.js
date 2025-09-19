@@ -18,7 +18,7 @@ export default class Weather extends LightningElement {
   billingAddressLabel = ''
   shippingCity
   billingCity
-  accountName
+  accountFirstName
 
   isLoading = true
   selectedAddress = 'shipping'
@@ -31,24 +31,23 @@ export default class Weather extends LightningElement {
         }
   }
   
-    @wire(getRecord, { recordId: '$recordId', fields: [NAME,SHIPPING_CITY, BILLING_CITY] })
-        wiredAccount({ error, data }) {
-        console.log('Reached wiredAccount')
-            if (data) {
-                this.shippingCity = data.fields.ShippingCity.value
-                this.billingCity = data.fields.BillingCity.value
-                this.accountName = data.fields.Name.value || `Account's`
-
-                const cityToFetch = this.selectedAddress === 'billing' ? this.billingCity : this.shippingCity
-                //cityToFetch !== this.weatherInfo?.cityName prevents redundant API calls
-                //On Inital load when weatherInfo does not exist it will evaluate to undef and safely use the default selectedAddress
-                if (cityToFetch && cityToFetch !== this.weatherInfo?.cityName) {        
-                    this.callWeatherService(cityToFetch)
-                }
-            } else if (error) {
-                this.weatherInfo = undefined
-                console.error('Error fetching account record', error)
+  @wire(getRecord, { recordId: '$recordId', fields: [NAME,SHIPPING_CITY, BILLING_CITY] })
+    wiredAccount({ error, data }) {
+    console.log('Reached wiredAccount')
+        if (data) {
+            this.shippingCity = data.fields.ShippingCity.value
+            this.billingCity = data.fields.BillingCity.value
+            this.accountFirstName = (data.fields.Name.value || `Account's`).split(' ')[0];
+            const cityToFetch = this.selectedAddress === 'billing' ? this.billingCity : this.shippingCity
+            //cityToFetch !== this.weatherInfo?.cityName prevents redundant API calls
+            //On Inital load when weatherInfo does not exist it will evaluate to undef and safely use the default selectedAddress
+            if (cityToFetch && cityToFetch !== this.weatherInfo?.cityName) {        
+                this.callWeatherService(cityToFetch)
             }
+        } else if (error) {
+            this.weatherInfo = undefined
+            console.error('Error fetching account record', error)
+        }
     }
 
   //This method is called either from the Wire (On Inital load AND when accounts address fields change)
@@ -77,7 +76,7 @@ export default class Weather extends LightningElement {
 
 
   get cardTitle(){
-      return `Tomorrow's weather in ${this.accountName}'s`
+      return `Tomorrow's weather in ${this.accountFirstName}'s`
   }
 
   get currentAddressLabel() {
