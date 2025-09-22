@@ -2,8 +2,8 @@ public class AdressWeatherService {
 
     @AuraEnabled
     public static WeatherInfo getTomorrowWeatherByCity(String city) {
-        String endpoint = 'forecast.json?q=' + EncodingUtil.urlEncode(city, 'UTF-8') + '&days=2';
         try {
+            String endpoint = 'forecast.json?q=' + EncodingUtil.urlEncode(city, 'UTF-8') + '&days=2';
             HttpResponse res = sendGetRequest(endpoint);
             if(res.getStatusCode() == 200){
                 Map<String, Object> parsedJsonRes = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
